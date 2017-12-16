@@ -1,5 +1,6 @@
 ;; -*- mode: scheme; coding: utf-8 -*-
-;; Copyright © 2009, 2010, 2012 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2012, 2017 Göran Weinholt <goran@weinholt.se>
+;; SPDX-License-Identifier: MIT
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -22,7 +23,7 @@
 
 ;; The MD5 Message-Digest Algorithm. RFC 1321
 
-(library (industria crypto md5)
+(library (hashing md5)
   (export make-md5 md5-update! md5-finish! md5-clear!
           md5 md5-copy md5-finish
           md5-length
@@ -30,8 +31,8 @@
           md5->bytevector md5->string
           md5-hash=? md5-96-hash=?
           hmac-md5)
-  (import (only (srfi :1 lists) iota)
-          (except (rnrs) bitwise-rotate-bit-field))
+  (import (hashing private common)
+          (rnrs))
 
   (define (md5-length) 16)
 
@@ -247,7 +248,7 @@
 
   (define (md5-96-copy-hash! state bv off)
     (copy-hash! state bv off 3))
-  
+
   (define (md5->bytevector state)
     (let ((ret (make-bytevector (* 4 4))))
       (md5-copy-hash! state ret 0)
@@ -276,7 +277,7 @@
   (define (md5-hash=? state bv) (cmp state bv 4))
 
   (define (md5-96-hash=? state bv) (cmp state bv 3))
-  
+
   (define (hmac-md5 secret . data)
     ;; RFC 2104.
     (if (> (bytevector-length secret) 64)

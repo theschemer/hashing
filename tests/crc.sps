@@ -1,6 +1,6 @@
 #!/usr/bin/env scheme-script
 ;; -*- mode: scheme; coding: utf-8 -*- !#
-;; Copyright © 2009, 2010 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2017 Göran Weinholt <goran@weinholt.se>
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -21,8 +21,7 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (industria crypto crc)
-        (industria compression adler-32)
+(import (hashing crc)
         (srfi :78 lightweight-testing)
         (rnrs))
 
@@ -69,8 +68,5 @@
             #xB704CE #f #f 0 #x21CF02)  ;CRC-24
 
 (check (crc-test-self-test) => 'success)
-
-;; And last a test for Adler-32
-(check (adler-32-self-test) => 'success)
 
 (check-report)

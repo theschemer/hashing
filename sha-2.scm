@@ -1,5 +1,6 @@
 ;; -*- mode: scheme; coding: utf-8 -*-
-;; Copyright © 2009, 2010, 2012 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2012, 2017 Göran Weinholt <goran@weinholt.se>
+;; SPDX-License-Identifier: MIT
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -27,7 +28,7 @@
 ;; TODO: give an error if more than 2^64 / 2^128 bits are processed?
 ;; TODO: Optimize. Should be simple enough with the help of a profiler.
 
-(library (industria crypto sha-2)
+(library (hashing sha-2)
   (export make-sha-224 sha-224-update! sha-224-finish! sha-224-clear!
           sha-224 sha-224-copy sha-224-finish sha-224-length
           sha-224-copy-hash! sha-224-128-copy-hash!
@@ -62,7 +63,7 @@
   (define (sha-256-length) 256/8)
   (define (sha-384-length) 384/8)
   (define (sha-512-length) 512/8)
-  
+
   (define (vector-copy x) (vector-map (lambda (i) i) x))
 
   (define (ror32 n count)
@@ -578,6 +579,4 @@
     (make-hmac 128 sha-384 sha-384->bytevector make-sha-384 sha-384-update! sha-384-finish! sha-384-clear!))
 
   (define hmac-sha-512
-    (make-hmac 128 sha-512 sha-512->bytevector make-sha-512 sha-512-update! sha-512-finish! sha-512-clear!))
-
-  )
+    (make-hmac 128 sha-512 sha-512->bytevector make-sha-512 sha-512-update! sha-512-finish! sha-512-clear!)))

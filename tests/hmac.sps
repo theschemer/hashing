@@ -1,6 +1,6 @@
 #!/usr/bin/env scheme-script
 ;; -*- mode: scheme; coding: utf-8 -*- !#
-;; Copyright © 2009, 2010 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2017 Göran Weinholt <goran@weinholt.se>
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -25,7 +25,7 @@
         (only (srfi :13 strings) string-filter)
         (only (srfi :14 char-sets) char-set:hex-digit)
         (srfi :78 lightweight-testing)
-        (industria crypto sha-2))
+        (hashing sha-2))
 
 (define (filter-digest str)
   (string-filter char-set:hex-digit str))

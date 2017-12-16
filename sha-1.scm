@@ -1,5 +1,6 @@
 ;; -*- mode: scheme; coding: utf-8 -*-
-;; Copyright © 2009, 2010, 2012 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2012, 2017 Göran Weinholt <goran@weinholt.se>
+;; SPDX-License-Identifier: MIT
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -27,7 +28,7 @@
 ;; TODO: give an error if more than 2^64 bits are processed?
 ;; TODO: Optimize. Should be simple enough with the help of a profiler.
 
-(library (industria crypto sha-1)
+(library (hashing sha-1)
   (export make-sha-1 sha-1-update! sha-1-finish! sha-1-clear!
           sha-1 sha-1-copy sha-1-finish
           sha-1-transform!              ;for interested parties only
@@ -36,7 +37,7 @@
           sha-1->bytevector sha-1->string
           sha-1-hash=? sha-1-96-hash=?
           hmac-sha-1)
-  (import (except (rnrs) bitwise-rotate-bit-field))
+  (import (rnrs))
 
   (define (sha-1-length) 20)
 

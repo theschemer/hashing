@@ -1,7 +1,8 @@
 #!/usr/bin/env scheme-script
 ;; -*- mode: scheme; coding: utf-8 -*- !#
 ;; Print the checksum/hash of a file
-;; Copyright © 2009, 2010, 2011, 2012 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2011, 2012, 2017 Göran Weinholt <goran@weinholt.se>
+;; SPDX-License-Identifier: MIT
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -22,13 +23,16 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (industria compression adler-32)
-        (industria crypto sha-1)
-        (industria crypto sha-2)
-        (industria crypto md5)
-        (industria crypto crc)
-        (only (srfi :13 strings) string-join string-pad)
+(import (hashing sha-1)
+        (hashing sha-2)
+        (hashing md5)
+        (hashing crc)
         (rnrs))
+
+(define (string-pad str len char)
+  (if (< (string-length str) len)
+      (string-append (make-string (- len (string-length str)) char) str)
+      str))
 
 (define (checksum-port/hash make-state update! finish! ->string)
   (lambda (port)
@@ -82,8 +86,6 @@
       ("sha-256" . ,(lambda () (checksum-port/hash make-sha-256 sha-256-update! sha-256-finish! sha-256->string)))
       ("sha-384" . ,(lambda () (checksum-port/hash make-sha-384 sha-384-update! sha-384-finish! sha-384->string)))
       ("sha-512" . ,(lambda () (checksum-port/hash make-sha-512 sha-512-update! sha-512-finish! sha-512->string)))
-      ("adler-32" . ,(lambda () (checksum-port/crc 'adler-32 adler-32-init adler-32-finish adler-32-update
-                                                   adler-32-self-test adler-32-width)))
       ,(import-crc crc-32)
       ,(import-crc crc-16)
       ,(import-crc crc-16/ccitt)
@@ -93,13 +95,12 @@
       ,(import-crc crc-64/ecma-182))))
 
 (unless (> (length (command-line)) 1)
-  (display (string-append
-            "Usage: checksum.sps algorithm filename ...\n\
+  (display "Usage: checksum algorithm filename ...\n\
 \n\
-The algorithm can be one of: "
-            (string-join (map car algorithms) ", ")
-            "\n")
+Defined algorithms: "
            (current-error-port))
+  (display (map car algorithms) (current-error-port))
+  (newline (current-error-port))
   (exit 1))
 
 (let ((csum (cond ((assoc (string-downcase (cadr (command-line)))
