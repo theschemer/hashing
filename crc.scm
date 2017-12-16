@@ -86,7 +86,7 @@
 (library (hashing crc)
   (export define-crc)
   (import (rnrs)
-          (hashing private common))
+          (for (hashing private common) expand))
 
   (define-syntax define-crc
     (lambda (x)
