@@ -82,7 +82,7 @@
 ;; Another example: the polynomial x^8 + x^2 + x + 1 in this syntax
 ;; becomes: (8 2 1 0)
 
-(library (weinholt crypto crc)
+(library (industria crypto crc)
   (export define-crc)
   (import (rnrs)
           (for (only (srfi :1 lists) iota) expand))

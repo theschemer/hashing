@@ -22,7 +22,7 @@
 
 ;; RFC 2104, FIPS-198-1.
 
-(library (weinholt crypto hmac)
+(library (industria crypto hmac)
   (export make-hmac)
   (import (rnrs))
 

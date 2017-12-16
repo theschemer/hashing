@@ -27,7 +27,7 @@
 ;; TODO: give an error if more than 2^64 / 2^128 bits are processed?
 ;; TODO: Optimize. Should be simple enough with the help of a profiler.
 
-(library (weinholt crypto sha-2)
+(library (industria crypto sha-2)
   (export make-sha-224 sha-224-update! sha-224-finish! sha-224-clear!
           sha-224 sha-224-copy sha-224-finish sha-224-length
           sha-224-copy-hash! sha-224-128-copy-hash!
@@ -56,7 +56,7 @@
           sha-512-hash=? sha-512-128-hash=?
           hmac-sha-512)
   (import (rnrs)
-          (weinholt crypto hmac))
+          (industria crypto hmac))
 
   (define (sha-224-length) 224/8)
   (define (sha-256-length) 256/8)
