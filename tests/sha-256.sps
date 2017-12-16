@@ -1,6 +1,6 @@
 #!/usr/bin/env scheme-script
 ;; -*- mode: scheme; coding: utf-8 -*- !#
-;; Copyright © 2009, 2010 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2017 Göran Weinholt <goran@weinholt.se>
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -21,9 +21,9 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (industria crypto sha-2)
+(import (rnrs)
         (srfi :78 lightweight-testing)
-        (rnrs))
+        (hashing sha-2))
 
 (define (sha256 data)
   (string-downcase (sha-256->string (sha-256 data))))
@@ -108,3 +108,4 @@
        "8bb9a1db9806f20df7f77b82138c7914d174d59e13dc4d0169c9057b133e1d62")
 
 (check-report)
+(assert (check-passed? 16))

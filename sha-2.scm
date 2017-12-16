@@ -57,7 +57,7 @@
           sha-512-hash=? sha-512-128-hash=?
           hmac-sha-512)
   (import (rnrs)
-          (industria crypto hmac))
+          (hashing hmac))
 
   (define (sha-224-length) 224/8)
   (define (sha-256-length) 256/8)

@@ -21,9 +21,9 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (hashing crc)
+(import (rnrs (6))
         (srfi :78 lightweight-testing)
-        (rnrs))
+        (hashing crc))
 
 ;; Simple tests on the pre-defined CRCs:
 
@@ -70,3 +70,4 @@
 (check (crc-test-self-test) => 'success)
 
 (check-report)
+(assert (check-passed? 10))

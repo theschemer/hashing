@@ -1,4 +1,5 @@
 # (hashing *)
+[![Build Status](https://travis-ci.org/weinholt/hashing.svg?branch=master)](https://travis-ci.org/weinholt/hashing)
 
 This is a collection of R6RS libraries for hashing (checksums,
 message digests, etc).

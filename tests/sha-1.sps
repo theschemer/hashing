@@ -1,6 +1,6 @@
 #!/usr/bin/env scheme-script
 ;; -*- mode: scheme; coding: utf-8 -*- !#
-;; Copyright © 2009, 2010, 2011 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2011, 2017 Göran Weinholt <goran@weinholt.se>
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -21,11 +21,10 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (rnrs)
-        (for (only (srfi :1 lists) iota) expand)
+(import (rnrs (6))
         (srfi :78 lightweight-testing)
-        (industria bytevectors)
-        (industria crypto sha-1))
+        (for (hashing private common) expand)
+        (hashing sha-1))
 
 (define (test/s expect . data)
   (let ((result (sha-1->string (apply sha-1 (map string->utf8 data)))))
@@ -220,19 +219,20 @@
           (string->utf8 "Test With Truncation"))
        => "4c1a03424b55e07fe7f27be1d58bb9324a9a5a04")
 (check (sha-1-hash=?
-        (hmac-sha-1 (uint->bytevector #x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c)
+        (hmac-sha-1 (make-bytevector 20 #x0c)
                     (string->utf8 "Test With Truncation"))
-        (uint->bytevector #x4c1a03424b55e07fe7f27be1d58bb9324a9a5a04))
+        #vu8(#x4c #x1a #x03 #x42 #x4b #x55 #xe0 #x7f #xe7 #xf2 #x7b #xe1 #xd5 #x8b
+                  #xb9 #x32 #x4a #x9a #x5a #x04))
        => #t)
 (check (sha-1-96-hash=?
-        (hmac-sha-1 (uint->bytevector #x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c)
+        (hmac-sha-1 (make-bytevector 20 #x0c)
                     (string->utf8 "Test With Truncation"))
-        (uint->bytevector #x4c1a03424b55e07fe7f27be1))
+        #vu8(#x4c #x1a #x03 #x42 #x4b #x55 #xe0 #x7f #xe7 #xf2 #x7b #xe1))
        => #t)
 (check (sha-1-96-hash=?
-        (hmac-sha-1 (uint->bytevector #x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c)
+        (hmac-sha-1 (make-bytevector 20 #x0c)
                     (string->utf8 "Test With Truncation"))
-        (uint->bytevector #x4c1a03424b55e07fe7f27be0))
+        #vu8(#x4c #x1a #x03 #x42 #x4b #x55 #xe0 #x7f #xe7 #xf2 #x7b #xe0))
        => #f)                           ;bad mac
 
 
@@ -245,3 +245,4 @@
        => "e8e99d0f45237d786d6bbaa7965c7808bbff1a91")
 
 (check-report)
+(assert (check-passed? 123))

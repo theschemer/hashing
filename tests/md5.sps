@@ -1,6 +1,6 @@
 #!/usr/bin/env scheme-script
 ;; -*- mode: scheme; coding: utf-8 -*- !#
-;; Copyright © 2009, 2010 Göran Weinholt <goran@weinholt.se>
+;; Copyright © 2009, 2010, 2017 Göran Weinholt <goran@weinholt.se>
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -21,10 +21,9 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (rnrs)
-        (industria bytevectors)
-        (industria crypto md5)
-        (srfi :78 lightweight-testing))
+(import (rnrs (6))
+        (srfi :78 lightweight-testing)
+        (hashing md5))
 
 (define (m str) (string-downcase (md5->string (md5 (string->utf8 str)))))
 
@@ -71,19 +70,19 @@
           (string->utf8 "Test With Truncation"))
        => "56461ef2342edc00f9bab995690efd4c") ; not testing truncation...
 (check (md5-hash=?
-        (hmac-md5 (uint->bytevector #x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c)
+        (hmac-md5 (make-bytevector 16 #x0c)
                   (string->utf8 "Test With Truncation"))
-        (uint->bytevector #x56461ef2342edc00f9bab995690efd4c))
+        #vu8(#x56 #x46 #x1e #xf2 #x34 #x2e #xdc #x00 #xf9 #xba #xb9 #x95 #x69 #x0e #xfd #x4c))
        => #t)
 (check (md5-96-hash=?
-        (hmac-md5 (uint->bytevector #x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c)
+        (hmac-md5 (make-bytevector 16 #x0c)
                   (string->utf8 "Test With Truncation"))
-        (uint->bytevector #x56461ef2342edc00f9bab995))
+        #vu8(#x56 #x46 #x1e #xf2 #x34 #x2e #xdc #x00 #xf9 #xba #xb9 #x95))
        => #t)
 (check (md5-96-hash=?
-        (hmac-md5 (uint->bytevector #x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c)
+        (hmac-md5 (make-bytevector 20 #x0c)
                   (string->utf8 "Test With Truncation"))
-        (uint->bytevector #x56461ef2342edc00f9bab990))
+        #vu8(#x56 #x46 #x1e #xf2 #x34 #x2e #xdc #x00 #xf9 #xba #xb9 #x90))
        => #f)                           ;bad mac
 
 (check (h (make-bytevector 80 #xaa)
@@ -95,3 +94,4 @@
        => "6f630fad67cda0ee1fb1f562db3aa53e")
 
 (check-report)
+(assert (check-passed? 19))

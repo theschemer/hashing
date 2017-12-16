@@ -21,7 +21,7 @@
 ;; DEALINGS IN THE SOFTWARE.
 #!r6rs
 
-(import (rnrs)
+(import (rnrs (6))
         (only (srfi :13 strings) string-filter)
         (only (srfi :14 char-sets) char-set:hex-digit)
         (srfi :78 lightweight-testing)
@@ -201,3 +201,4 @@
   134676fb6de0446065c97440fa8c6a58")
 
 (check-report)
+(assert (check-passed? 80))
